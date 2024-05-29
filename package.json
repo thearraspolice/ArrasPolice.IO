@@ -6,7 +6,7 @@
   "scripts": {
     "startOptimized": "node --optimize-for-size --no-lazy --gc_interval=120 server/index",
     "restartOnSaveOptimized": "pm2 start server/index.js --name arras --node-args='--optimize-for-size --no-lazy --gc_interval=120'",
-    "start": "pm2 start server/index.js --name arras",
+    "start": "node server/index",
     "startForge": "pm2 start serverForge/index.js --name arrasForge",
     "startLaby": "pm2 start serverLabyrinch/index.js --name arrasLaby",
     "restartOnSave": "node server/index",
