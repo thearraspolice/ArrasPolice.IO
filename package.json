@@ -1,0 +1,46 @@
+{
+  "name": "arras-codesandbox-mod",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "startOptimized": "node --optimize-for-size --no-lazy --gc_interval=120 server/index",
+    "restartOnSaveOptimized": "pm2 start server/index.js --name arras --node-args='--optimize-for-size --no-lazy --gc_interval=120'",
+    "start": "pm2 start server/index.js --name arras",
+    "startForge": "pm2 start serverForge/index.js --name arrasForge",
+    "startLaby": "pm2 start serverLabyrinch/index.js --name arrasLaby",
+    "restartOnSave": "node server/index",
+    "startYourScript": "node server/index",
+    "pm2": "pm2 start server/index.js --name arras",
+    "forceRestart": "pm2 restart arras -f",
+    "forceRestartForge": "pm2 restart arrasForge -f",
+    "forceRestartLaby": "pm2 restart arrasLaby -f",
+    "stopServer": "pm2 stop arras -f",
+    "stopServerForge": "pm2 stop arrasForge -f",
+    "stopServerLaby": "pm2 stop arrasLaby -f",
+    "logs": "pm2 logs arras",
+    "logsForge": "pm2 logs arrasForge",
+    "logsLaby": "pm2 logs arrasLaby"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codesandbox-app/static-template.git"
+  },
+  "keywords": [],
+  "author": "Ives van Hoorne",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codesandbox-app/static-template/issues"
+  },
+  "homepage": "https://github.com/codesandbox-app/static-template#readme",
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "eris": "^0.17.2",
+    "nodemon": "^3.0.1",
+    "pm2": "^5.4.0",
+    "ws": "^8.17.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

@@ -1,0 +1,31 @@
+module.exports = [
+  {
+    key: process.env.TOKEN_POL,
+    discordID: "0",
+    nameColor: "#ffffff",
+    class: "betatester",
+    level: 2,
+    name: "unnamed#0000",
+    note: "note here",
+  },
+  {
+    key: process.env.TOKEN_DEVELOPER,
+    discordID: "0",
+    nameColor: "#ffffff",
+    class: "developer",
+    infiniteLevelUp: true,
+    level: 5,
+    name: "unnamed#0000",
+    note: "note here",
+  },
+  {
+    key: process.env.TOKEN_SECRET,
+    discordID: "0",
+    nameColor: "#ffffff",
+    class: "secret",
+    infiniteLevelUp: true,
+    level: 6,
+    name: "unnamed#0000",
+    note: "Toothless Only",
+  },
+];

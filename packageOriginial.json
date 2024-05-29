@@ -1,0 +1,33 @@
+{
+  "name": "arras-codesandbox-mod",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "startOptimized": "node --optimize-for-size --no-lazy --gc_interval=120 server/index",
+    "restartOnSaveOptimized": "node --optimize-for-size --no-lazy --gc_interval=120 --watch server/index",
+    "start": "node server/index",
+    "restartOnSave": "node --watch server/index",
+    "host": "node standaloneClient/index",
+    "build": "node standaloneClient/build minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codesandbox-app/static-template.git"
+  },
+  "keywords": [],
+  "author": "Ives van Hoorne",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codesandbox-app/static-template/issues"
+  },
+  "homepage": "https://github.com/codesandbox-app/static-template#readme",
+  "devDependencies": {
+    "eris": "^0.17.2",
+    "nodemon": "^3.0.1",
+    "ws": "^8.13.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
