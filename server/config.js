@@ -6,7 +6,7 @@ module.exports = {
   host: "w8isl776.up.railway.app",
 
   // Which port to run the web server on.
-  port: 3000,
+  port: 3001,
 
   // How often to update the list of the entities that players can see.
   // Has effects of when entities are activated.
