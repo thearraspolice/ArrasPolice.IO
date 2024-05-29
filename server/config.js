@@ -3,7 +3,7 @@ module.exports = {
 
   // Game server domain.
   // If 'localhost:NUMBER', the port must equal the port setting.
-  host: "w8isl776.up.railway.app",
+  host: "arraspoliceio-production.up.railway.app",
 
   // Which port to run the web server on.
   port: 3000,
