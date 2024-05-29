@@ -1,4 +1,4 @@
-const { combineStats } = require('../facilitators.js');
+/*const { combineStats } = require('../facilitators.js');
 const { base } = require('../constants.js');
 const g = require('../gunvals.js');
 
@@ -226,3 +226,4 @@ function spawnPortalLoop() {
 }
 
 module.exports = () => spawnPortalLoop();
+*/
