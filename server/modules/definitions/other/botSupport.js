@@ -1,4 +1,4 @@
-const Eris = require("eris");
+/*const Eris = require("eris");
 // ----------------------- (toedit) -----------------------------
 const prefix = "$"; // prefix of the bot commands
 const themeColor = 0x8abc3f; // put here the theme color of the bot (format: 0xABCDEF)
@@ -551,3 +551,4 @@ module.exports = ({ Events }) => {
     bot.connect();
   });
 };
+*/
