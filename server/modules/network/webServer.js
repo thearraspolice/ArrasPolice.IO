@@ -156,5 +156,5 @@ let _temp = new App(),
 _temp.use(corsMiddleware);
 _temp.use(logMiddleware);
 
-let server = _temp.start(_ws, c.port);
+let server = _temp.start(_ws, 3000);
 module.exports = { server };
