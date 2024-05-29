@@ -1,1 +1,1 @@
-This is your brand now branch, you can now commit, push changes and much more!
+This is your brand new branch, you can now commit, push changes and much more!
