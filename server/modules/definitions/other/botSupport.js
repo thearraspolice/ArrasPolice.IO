@@ -18,7 +18,7 @@ const envKeys = [
 ];
 // --------------------------------------------------------------
 
-global.bot = new Eris(process.env.TOKEN_BOT); // add the token of your application in .env and call it: BOT_TOKEN=yourbottokenhere
+global.bot = new Eris("MTIyOTgwMDcyMTM1Njk1MTYxMg.GF9oln.8kBV3nQZu9q09fow0ozKlL3t61NObSleSPSdPo"); // add the token of your application in .env and call it: BOT_TOKEN=yourbottokenhere
 bot.on("ready", async () => {
   bot.createMessage(logsChannel, {
     embed: {
