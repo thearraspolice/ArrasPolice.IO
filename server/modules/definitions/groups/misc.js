@@ -1284,3 +1284,242 @@ Class.tagMode = {
     PARENT: "bullet",
     LABEL: "Players",
 };
+Class.portal1 = {
+    PARENT: ["genericTank"],
+    LABEL: "portalType1",
+    COLOR: 19,
+    SIZE: 45,
+    HITS_OWN_TYPE: "never",
+    BODY: {
+        FOV: 2.5,
+        DAMAGE: 0,
+        HEALTH: 1e100,
+        SHIELD: 1e100,
+        REGEN: 1e100,
+        PUSHABILITY: 0,
+        DENSITY: 0,
+    },
+    TYPE: "miniboss",
+    IGNORED_BY_AI: true,
+    GIVE_KILL_MESSAGE: false,
+    TURRETS: [
+      {
+        POSITION: [24, 0, 0, 0, 0, 0],
+        TYPE: "port1blue",
+      },
+    ],
+    ON: [
+        {
+         event: "tick",
+         handler: ({ body }) => {
+           for (let instance of entities) {
+                 let diffX = instance.x - body.x,
+                     diffY = instance.y - body.y,
+                     dist2 = diffX ** 2 + diffY ** 2,
+                     number1 = 1,
+                     number2 = 1,
+                     number3 = 1/20, //1/7,
+                     number4 = 1,
+                     forceMulti = (((((3)*100) ** 2)** number1) * number2) / dist2;
+                 if (dist2 <= ((body.size / 12)*100) ** 2) {
+                    if (instance.isPlayer && instance.skill.level >= 90) {
+                     instance.velocity.x += util.clamp(body.x - instance.x, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.001);//0.05
+                     instance.velocity.y += util.clamp(body.y - instance.y, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.001);//0.05
+                } else if (
+                !instance.isDominator && 
+                !instance.isArenaCloser && 
+                !instance.godmode && 
+                !instance.invuln && 
+                instance.id != body.id && 
+                instance.type !== "wall" &&
+                instance.team != body.team && 
+                ((instance.id === instance.master.id && instance.type !== "miniboss") || 
+                    instance.type === "bullet" || 
+                    instance.type === "drone" || 
+                    instance.type === "trap" || 
+                    instance.type === "minion")) {
+                instance.accel.x -= util.clamp(body.x - instance.x, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.3);//0.05
+                instance.accel.y -= util.clamp(body.y - instance.y, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.3);//0.05
+                if (instance.isPlayer && !instance.isAlerted) {
+                  instance.isAlerted = true;
+                  setTimeout(() => {
+                    instance.isAlerted = false;
+                  }, 10000)
+                  instance.socket.talk("m", "You need to be level 90 to enter this portal!")
+                }
+             }
+         }
+         }
+         }
+     },
+      ],
+  };
+  Class.port1blue = {
+    PARENT: "genericEntity",
+    COLOR: 10,
+  }
+  Class.port2Star = {
+    SHAPE: [
+      [1, 0],
+      [0.1618, 0.11756],
+      [0.30902, 0.95106],
+      [-0.0618, 0.19021],
+      [-0.80902, 0.58779],
+      [-0.2, 0],
+      [-0.80902, -0.58779],
+      [-0.0618, -0.19021],
+      [0.30902, -0.95106],
+      [0.1618, -0.11756],
+    ],
+    COLOR: 6,
+  };
+  Class.port3Star = {
+    SHAPE: [
+      [1, 0],
+      [0.1618, 0.11756],
+      [0.30902, 0.95106],
+      [-0.0618, 0.19021],
+      [-0.80902, 0.58779],
+      [-0.2, 0],
+      [-0.80902, -0.58779],
+      [-0.0618, -0.19021],
+      [0.30902, -0.95106],
+      [0.1618, -0.11756],
+    ],
+    COLOR: 12,
+  };
+  Class.port2Circle = {
+    SHAPE: 0,
+    COLOR: 6,
+  };
+  Class.portal2 = {
+    PARENT: ["genericTank"],
+    LABEL: "portalType2",
+    COLOR: 19,
+    SIZE: 45,
+    HITS_OWN_TYPE: "never",
+    BODY: {
+        FOV: 2.5,
+        DAMAGE: 0,
+        HEALTH: 1e100,
+        SHIELD: 1e100,
+        REGEN: 1e100,
+        PUSHABILITY: 0,
+        DENSITY: 0,
+    },
+    TURRETS: [
+      {
+        POSITION: [24, 0, 0, 0, 0, 0],
+        TYPE: Class.port2Circle,
+      },
+      {
+        POSITION: [40, 0, 0, 0, 360, 0],
+        TYPE: [Class.port2Star, { CONTROLLERS: ["reversespin"] }],
+      },
+    ],
+    ON: [
+        {
+         event: "tick",
+         handler: ({ body }) => {
+           for (let instance of entities) {
+                 let diffX = instance.x - body.x,
+                     diffY = instance.y - body.y,
+                     dist2 = diffX ** 2 + diffY ** 2,
+                     number1 = 1,
+                     number2 = 1,
+                     number3 = 1/20, //1/7,
+                     number4 = 1,
+                     forceMulti = (((((3)*100) ** 2)** number1) * number2) / dist2;
+                 if (dist2 <= ((body.size / 12)*100) ** 2) {
+                    if (instance.isPlayer) {
+                     instance.velocity.x += util.clamp(body.x - instance.x, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.001);//0.05
+                     instance.velocity.y += util.clamp(body.y - instance.y, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.001);//0.05
+                } else if (
+                !instance.isDominator && 
+                !instance.isArenaCloser && 
+                !instance.godmode && 
+                !instance.invuln && 
+                instance.id != body.id && 
+                instance.type !== "wall" &&
+                instance.team != body.team && 
+                ((instance.id === instance.master.id && instance.type !== "miniboss") || 
+                    instance.type === "bullet" || 
+                    instance.type === "drone" || 
+                    instance.type === "trap" || 
+                    instance.type === "minion")) {
+                instance.accel.x -= util.clamp(body.x - instance.x, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.3);//0.05
+                instance.accel.y -= util.clamp(body.y - instance.y, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.3);//0.05
+             }
+         }
+         }
+         }
+     },
+      ],
+    TYPE: "miniboss",
+    IGNORED_BY_AI: true,
+    GIVE_KILL_MESSAGE: false,
+  };
+  
+  Class.portal3 = {
+    PARENT: ["genericTank"],
+    LABEL: "portalType3",
+    COLOR: 19,
+    SIZE: 45,
+    HITS_OWN_TYPE: "never",
+    IGNORED_BY_AI: true,
+    GIVE_KILL_MESSAGE: false,
+    BODY: {
+        FOV: 2.5,
+        DAMAGE: 0,
+        HEALTH: 1e100,
+        SHIELD: 1e100,
+        REGEN: 1e100,
+        PUSHABILITY: 0,
+        DENSITY: 0,
+    },
+    TURRETS: [
+      {
+        POSITION: [40, 0, 0, 0, 360, 0],
+        TYPE: [Class.port3Star, { CONTROLLERS: ["spin"] }],
+      },
+    ],
+    ON: [
+        {
+         event: "tick",
+         handler: ({ body }) => {
+           for (let instance of entities) {
+                 let diffX = instance.x - body.x,
+                     diffY = instance.y - body.y,
+                     dist2 = diffX ** 2 + diffY ** 2,
+                     number1 = 1,
+                     number2 = 1,
+                     number3 = 1/20, //1/7,
+                     number4 = 1,
+                     forceMulti = (((((3)*100) ** 2)** number1) * number2) / dist2;
+                 if (dist2 <= ((body.size / 12)*100) ** 2) {
+                    if (instance.isPlayer) {
+                     instance.velocity.x += util.clamp(body.x - instance.x, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.001);//0.05
+                     instance.velocity.y += util.clamp(body.y - instance.y, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.001);//0.05
+                } else if (
+                !instance.isDominator && 
+                !instance.isArenaCloser && 
+                !instance.godmode && 
+                !instance.invuln && 
+                instance.id != body.id && 
+                instance.type !== "wall" &&
+                instance.team != body.team && 
+                ((instance.id === instance.master.id && instance.type !== "miniboss") || 
+                    instance.type === "bullet" || 
+                    instance.type === "drone" || 
+                    instance.type === "trap" || 
+                    instance.type === "minion")) {
+                instance.accel.x -= util.clamp(body.x - instance.x, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.3);//0.05
+                instance.accel.y -= util.clamp(body.y - instance.y, -90, 90) * instance.damp * ((1 - (1/((forceMulti ** number3)* number4)))+ 0.3);//0.05
+             }
+         }
+         }
+         }
+     },
+      ],
+    TYPE: "miniboss",
+  };

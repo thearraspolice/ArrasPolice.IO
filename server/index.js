@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 Error.stackTraceLimit = Infinity;
+let maxRareFood = 0;
 let enviroment = require("./lib/dotenv.js")(
   fs.readFileSync(path.join(__dirname, "../.env")).toString(),
 );
@@ -73,6 +74,119 @@ function collide(collision) {
     other.type == "ascendPortal"
   )
     return 0;
+    if (
+      (instance.label === "portalType1" && other.type === "tank") ||
+      (other.label === "portalType1" && instance.type === "tank") ||
+      (instance.label === "portalType1" && other.type === "Dreadnought") ||
+      (other.label === "portalType1" && instance.type === "Dreadnought")
+    ) {
+      let player = instance.isPlayer ? instance : other;
+      if (player.skill.level > 90 && !player.hasAscended) {
+        if (other.label === "portalType1") return;
+        other.x = room.width / 2;
+        other.y = room.height / 2;
+        other.clear();
+        other.hasAscended = true;
+        other.define({
+          RESET_UPGRADES: true,
+        });
+        other.define(Class.cosmic);
+        player.socket.talk(
+          "m",
+          "You have been transfered into a new cosmic body.",
+        );
+        other.team = -9;
+        other.skill.points = 80;
+      }
+      if (other.hasAscended) {
+        other.x = room.width / 2;
+        other.y = room.height / 2;
+      }
+    } else if (
+      (instance.label === "portalType2" && other.type === "tank") ||
+      (other.label === "portalType2" && instance.type === "tank") ||
+      (instance.label === "portalType2" && other.type === "Dreadnought") ||
+      (other.label === "portalType2" && instance.type === "Dreadnought")
+    ) {
+      var randomX = Math.random() * 0.1 + 1;
+      var randomY = Math.random() * 2 + 1;
+      if (other.hasAscended) {
+        other.clear();
+        other.x = room.width / randomX;
+        other.y = room.height / randomY;
+        other.alwaysHasInvuln = true;
+        other.invuln = true;
+        other.socket.talk(
+          "m",
+          "You will be now invulnerable until you shoot, or wait 10 seconds.",
+        );
+        setTimeout(() => {
+          other.alwaysHasInvuln = false;
+        }, 10000);
+      } else if (other.type === "tank") {
+        other.clear();
+        other.x = room.width / randomX;
+        other.y = room.height / randomY;
+      } else {
+        if (instance.label === "portalType2") return;
+        instance.clear();
+        instance.x = room.width / randomX;
+        instance.y = room.height / randomY;
+      } 
+      if (other.type === "Dreadnought") {
+        other.clear();
+        other.x = room.width / randomX;
+        other.y = room.height / randomY;
+      } else {
+        if (instance.label === "portalType2") return;
+        instance.clear();
+        instance.x = room.width / randomX;
+        instance.y = room.height / randomY;
+      }
+    } else if (
+      (instance.label === "portalType3" && other.type === "tank") ||
+      (other.label === "portalType3" && instance.type === "tank") ||
+      (instance.label === "portalType3" && other.type === "Dreadnought") ||
+      (other.label === "portalType3" && instance.type === "Dreadnought")
+    ) {
+      var randomX = Math.random() * 4.4 + 1.8;
+      var randomY = Math.random() * 2 + 1.7;
+      if (other.hasAscended) {
+        other.clear();
+        other.x = room.width / 5.9;
+        other.y = room.height / 2;
+        other.alwaysHasInvuln = true;
+        other.invuln = true;
+        other.socket.talk(
+          "m",
+          "You will be now invulnerable until you shoot, or wait 10 seconds.",
+        );
+        setTimeout(() => {
+          other.alwaysHasInvuln = false;
+        }, 10000);
+      } else
+      if (other.type === "tank") {
+        other.clear();
+        other.x = room.width / 5.2;
+        other.y = room.height / 2;
+      } else {
+        if (instance.label === "portalType3") return;
+        instance.clear();
+        instance.x = room.width / 5.2;
+        instance.y = room.height / 2;
+      }
+  
+      if (other.type === "Dreadnought") {
+        other.clear();
+        other.x = room.width / 5.2;
+        other.y = room.height / 2;
+      } else {
+        if (instance.label === "portalType3") return;
+        instance.clear();
+        instance.x = room.width / 5.2;
+        instance.y = room.height / 2;
+      }
+    }
   switch (true) {
     case instance.label === "Travel Portal" || other.label === "Travel Portal":
       let [portal, otherBody] =
@@ -531,8 +645,182 @@ function spawnBasics() {
     });
   }
 }
+function spawnRareShapes() {
+ //util.log(`Max level: ${maxRareFood}`);
+ if (maxRareFood > 19) return;
+ let chooseGems = [Class.jewel, Class.gem];
+ let chooseTypeShinyFood = [ // Shiny types
+  Class.shinyEgg,
+  Class.shinySquare,
+  Class.shinyTriangle,
+];
+let chooseTypeShinyBigFood = [
+  Class.shinyPentagon,
+  Class.shinyBetaPentagon,
+  Class.shinyAlphaPentagon,
+]
+let chooseTypeLegendaryFood = [ // Legendary types
+  Class.legendaryEgg,
+  Class.legendarySquare,
+  Class.legendaryTriangle,
+]
+let chooseTypeLegendaryBigFood = [
+  Class.legendaryPentagon,
+  Class.legendaryBetaPentagon,
+  Class.legendaryAlphaPentagon,
+];
+let chooseTypeRainbowFood = [ // Rainbow Types
+  Class.rainbowEgg,
+  Class.rainbowSquare,
+  Class.rainbowTriangle,
+];
+let chooseTypeRainbowBigFood = [
+  Class.rainbowPentagon,
+  Class.rainbowBetaPentagon,
+  Class.rainbowAlphaPentagon,
+]
+let spawnBigShinyFood = Math.random() < 1.5 / 3;
+let spawnLegendaryFood = Math.random() < 1 / 3;
+let spawnBigLegendaryFood = Math.random() < 0.6 / 3;
+let spawnRainbowFood = Math.random() < 0.3 / 3;
+let spawnRainbowBigFood = Math.random() < 0.2 / 3;
+let spawnGemFood = Math.random() < 1.2 / 3;
+let team = TEAM_ENEMIES;
+let o = new Entity(ran.choose(room.labyNormal).loc);
+o.define(ran.choose(chooseTypeShinyFood));
+o.facing = ran.randomAngle();
+o.isFood = true;
+o.team = team;
+maxRareFood++
+o.on("dead", () => {
+  maxRareFood--
+});
+if (spawnBigShinyFood) {
+    let e = new Entity(ran.choose(room.labyNormal).loc);
+    e.define(ran.choose(chooseTypeShinyBigFood));
+    e.facing = ran.randomAngle();
+    e.isFood = true;
+    e.team = team;
+    maxRareFood++
+    e.on("dead", () => {
+      maxRareFood--
+    });
+  }
+if (spawnLegendaryFood) {
+    let l = new Entity(ran.choose(room.labyNormal).loc);
+    l.define(ran.choose(chooseTypeLegendaryFood));
+    l.facing = ran.randomAngle();
+    l.isFood = true;
+    l.team = team;
+    maxRareFood++
+    l.on("dead", () => {
+      maxRareFood--
+    });
+}
+if (spawnBigLegendaryFood) {
+    let n = new Entity(ran.choose(room.labyNormal).loc);
+    n.define(ran.choose(chooseTypeLegendaryBigFood));
+    n.facing = ran.randomAngle();
+    n.isFood = true;
+    n.team = team;
+    maxRareFood++
+    n.on("dead", () => {
+      maxRareFood--
+    });
+  }
+  if (spawnRainbowFood) {
+    let g = new Entity(ran.choose(room.labyNormal).loc);
+    g.define(ran.choose(chooseTypeRainbowFood));
+    g.facing = ran.randomAngle();
+    g.isFood = true;
+    g.team = team;
+    maxRareFood++
+    g.on("dead", () => {
+      maxRareFood--
+    });
+  }
+  if (spawnRainbowBigFood) {
+    let g = new Entity(ran.choose(room.labyNormal).loc);
+    g.define(ran.choose(chooseTypeRainbowBigFood));
+    g.facing = ran.randomAngle();
+    g.isFood = true;
+    g.team = team;
+    maxRareFood++
+    g.on("dead", () => {
+      maxRareFood--
+    });
+  }
+  if (spawnGemFood) {
+    let f = new Entity(ran.choose(room.labyNormal).loc);
+    f.define(ran.choose(chooseGems));
+    f.facing = ran.randomAngle();
+    f.isFood = true;
+    f.team = team;
+    maxRareFood++
+    f.on("dead", () => {
+      maxRareFood--
+    });
+  }
+}
+function spawnPortal(timeTillSpawn) {
+  let portalsNormal = [Class.portal1, Class.portal2];
+  let sanctuaryPortals = [Class.portal2, Class.portal3];
+  let abyssPortals = [Class.portal1, Class.portal3];
+  let spawnInAbyssChance = Math.random() < 1 / 3;
+  setInterval(() => {
+    spawnInAbyssChance = Math.random() < 2 / 3;
+    for (let i = 0; i < 1; i++) {
+    let o = new Entity(ran.choose(room.spawnableOldDreadFood).loc);
+    o.define(Class.portal2);
+    o.team = -101;
+    o.color.base = 19;
+    setTimeout(() => {
+      o.kill();
+    }, 25000);
+    setTimeout(() => {
+      o.kill();
+    }, 25000);
+    setTimeout(() => {
+      o.kill();
+    }, 25000);
+  }
+    for (let i = 0; i < 2; i++) {
+      let e = new Entity(ran.choose(room.cosmicRoom).loc);
+      e.define(ran.choose(sanctuaryPortals));
+      e.team = -101;
+      e.color.base = 19;
+      setTimeout(() => {
+        e.kill();
+      }, 25000);
+      setTimeout(() => {
+        e.kill();
+      }, 25100);
+      setTimeout(() => {
+        e.kill();
+      }, 25200);
+    }
+    if (spawnInAbyssChance) {
+      for (let i = 0; i < 3; i++) {
+        let p = new Entity(ran.choose(room.labyNormal).loc);
+        p.define(ran.choose(abyssPortals));
+        p.team = -101;
+        p.color.base = 19;
+        setTimeout(() => {
+          p.kill();
+        }, 25000);
+        setTimeout(() => {
+          p.kill();
+        }, 25100);
+        setTimeout(() => {
+          p.kill();
+        }, 25200);
+      }
+    }
+  }, timeTillSpawn);
+}
 // Bring it to life
 let counter = 0;
+spawnPortal(30000);
 setInterval(() => {
   gameloop();
   gamemodeLoop();
@@ -541,6 +829,7 @@ setInterval(() => {
   if (c.USE_OLDDREADNOUGHT_AS_NEST_FOOD) {
     spawnOldDreadShapes();
     spawnBasics();
+    spawnRareShapes();
   }
   if (counter++ / c.runSpeed > 30) {
     chatLoop();

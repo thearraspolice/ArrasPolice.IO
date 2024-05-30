@@ -3911,6 +3911,9 @@ Class.developer.UPGRADES_TIER_0 = [
   "portal",
   "ascendPortal",
   "plasmaRay",
+  "portal1",
+  "portal2",
+  "portal3",
 ];
 Class.betatester.UPGRADES_TIER_0 = [
   ["spaceship", "baseSpaceship"],

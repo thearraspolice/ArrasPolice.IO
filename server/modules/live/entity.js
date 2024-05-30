@@ -1829,18 +1829,6 @@ class Entity extends EventEmitter {
       this.chooseUpgradeFromBranch(numBranches); // Recursively build upgrade options
     }
   }
-  clear() {
-    // this fixes a lot of bugs.
-    for (let instance of entities) {
-      if (
-        instance.settings.clearOnMasterUpgrade &&
-        instance.master.id === this.id
-      ) {
-        instance.kill();
-        instance.destroy();
-      }
-    }
-  }
   chooseUpgradeFromBranch(remaining) {
     if (remaining > 0) {
       // If there's more to select
@@ -2220,6 +2208,18 @@ class Entity extends EventEmitter {
       }
     }
   }
+  clear() { // this fixes a lot of bugs.
+    for (let instance of entities) {
+      if (
+        instance.settings.clearOnMasterUpgrade &&
+        instance.master.id === this.id &&
+        instance.type !== "aura"
+      ) {
+        instance.kill();
+        instance.destroy();
+      }
+    }
+}
   damageMultiplier() {
     switch (this.type) {
       case "swarm":
@@ -2565,7 +2565,7 @@ class Entity extends EventEmitter {
           this.y = lerp(this.y, centerPoint.y, strength);
         }
       } else {
-        let padding = this.realSize - 50;
+        let padding = this.realSize - 0;
         this.accel.x -=
           (Math.max(
             this.x + padding - room.width,
