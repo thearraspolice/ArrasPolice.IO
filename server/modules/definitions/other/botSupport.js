@@ -1,3 +1,4 @@
+console.log("[BotSupport.js] Bot is disabled.")
 /*const Eris = require("eris");
 // ----------------------- (toedit) -----------------------------
 const prefix = "$"; // prefix of the bot commands
